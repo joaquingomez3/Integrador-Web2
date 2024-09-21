@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Obras de Arte</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Buscar Obras de Arte en el Museo Metropolitano de NY</h1>
+
+      <form id="searchForm">
+        <input
+          type="text"
+          id="query"
+          placeholder="Ingrese un término de búsqueda"
+          required
+        />
+
+        <select id="departmentSelect">
+          <option value="">Seleccione un Departamento</option>
+        </select>
+        <select id="countrySelect">
+          <option value="">Seleccione un Pais</option>
+        </select>
+        <button type="submit">Buscar</button>
+      </form>
+    </div>
+
+    <div class="gallery-container">
+      <h2>Resultados:</h2>
+      <div id="results" class="gallery"></div>
+      <!-- Aquí los resultados se mostrarán en forma de galería -->
+    </div>
+    <div class="botones" id="botones"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
