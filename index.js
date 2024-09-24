@@ -59,25 +59,25 @@ app.get('/api/artworks', async (req, res) => {
         }
 
         // Obtener  80 obras
-        
+       
         const objectIDs = data.objectIDs.slice(0, 80);  
         const artworks = await Promise.all(objectIDs.map(async (id) => {
             const artworkResponse = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`);
             const artworkData = await artworkResponse.json();
-            const traduccionTitulo = traduccionTexto(artworkData.title, en, es);
-            const traduccionCultura = traduccionTexto(artworkData.culture, en, es); ;
-            const traduccionDinastia = traduccionTexto(artworkData.dynasty, en, es); ;
+            // const traduccionTitulo = traduccionTexto(artworkData.title, en, es);
+            // const traduccionCultura = traduccionTexto(artworkData.culture, en, es); ;
+            // const traduccionDinastia = traduccionTexto(artworkData.dynasty, en, es); ;
 
-            return {
-                ...artworkData,
-                titulo: traduccionTitulo,
-                cultura: traduccionCultura,
-                dinastia: traduccionDinastia,
-            };
+            return artworkData //{
+               // ...artworkData,
+                // titulo: traduccionTitulo,
+                // cultura: traduccionCultura,
+                // dinastia: traduccionDinastia,
+           // };
             
         }));
         
-
+        console.log(artworks);
         res.json(artworks);
     } catch (error) {
         console.error('Error al buscar obras:', error);
