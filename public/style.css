@@ -136,3 +136,22 @@ select:hover{
     color: #666;
     margin: 5px 0;
 }
+
+
+.artwork a#verMas {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color:#9ec9e5; 
+    color: white; 
+    text-decoration: none;
+    border-radius: 4px; 
+    font-size: 14px; 
+    transition: background-color 0.3s ease;
+}
+
+
+.artwork a#verMas:hover {
+    background-color: #0056b3; 
+    color: #fff; 
+}
