@@ -123,9 +123,9 @@ document.getElementById('searchForm').addEventListener('submit', async function 
           artworkElement.classList.add('artwork');
           artworkElement.innerHTML = `
               <img src="${artwork.primaryImageSmall ? artwork.primaryImageSmall : 'https://via.placeholder.com/1024x1024?text=No+Image+Available'}" alt="Imagen NO Disponible" title="${artwork.objectDate}">
-              <h3>${artwork.title || 'Sin título'}</h3>
-             <p>Cultura: ${artwork.culture || 'Desconocido'}</p>
-              <p>Dinastia: ${artwork.dynasty || 'Desconocido'}</p>
+              <h3>${artwork.titulo || 'Sin título'}</h3>
+             <p>Cultura: ${artwork.cultura || 'Desconocido'}</p>
+              <p>Dinastia: ${artwork.dinastia || 'Desconocido'}</p>
               ${artwork.additionalImages && artwork.additionalImages.length > 0 ? `<a id="verMas" href="detalle.html?id=${artwork.objectID}">Ver Mas</a>` : ''}
          `;
        

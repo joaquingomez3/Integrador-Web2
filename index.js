@@ -10,6 +10,11 @@ const port = 3000;
 app.use(express.static(path.join(__dirname, 'public')));
 
   async function traductorTexto(texto, sourceLang, targetLang) {
+    const mensaje = "Desconocido";
+    if (!texto || texto.trim() === '') {
+        return mensaje; // Si el texto es nulo, indefinido o vacío, devuelve el texto tal cual.
+    }
+
      return new Promise((resolve, reject) => {
          traductor({
              text: texto,
@@ -25,18 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
      });
  }
 
-  async function translateText(text) {
-    if (!text || typeof text !== 'string') {
-        return 'desconocido'; // o devuelve un valor por defecto
-      }
-      try {
-        const translation = await translator.translate(text);
-        return translation.text;
-      } catch (error) {
-        console.error(`Error translating text: ${error}`);
-        return text; // Return original text if translation fails
-      }
-  }
+ 
 
 app.get('/api/artworks', async (req, res) => {
     const { query, departmentId } = req.query;
@@ -64,16 +58,16 @@ app.get('/api/artworks', async (req, res) => {
         const artworks = await Promise.all(objectIDs.map(async (id) => {
             const artworkResponse = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`);
             const artworkData = await artworkResponse.json();
-            // const traduccionTitulo = traduccionTexto(artworkData.title, en, es);
-            // const traduccionCultura = traduccionTexto(artworkData.culture, en, es); ;
-            // const traduccionDinastia = traduccionTexto(artworkData.dynasty, en, es); ;
+             const traduccionTitulo = await traductorTexto(artworkData.title, 'en', 'es');
+             const traduccionCultura = await traductorTexto(artworkData.culture, 'en', 'es'); ;
+             const traduccionDinastia = await traductorTexto(artworkData.dynasty, 'en', 'es'); ;
 
-            return artworkData //{
-               // ...artworkData,
-                // titulo: traduccionTitulo,
-                // cultura: traduccionCultura,
-                // dinastia: traduccionDinastia,
-           // };
+            return {
+                ...artworkData,
+                 titulo: traduccionTitulo || artworkData.title,
+                 cultura: traduccionCultura || artworkData.culture,
+                 dinastia: traduccionDinastia   || artworkData.dynasty,
+            };
             
         }));
         
