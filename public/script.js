@@ -133,4 +133,20 @@ document.getElementById('searchForm').addEventListener('submit', async function 
           resultsDiv.appendChild(artworkElement);
       });
  }
-//prueba commit
+
+
+//  async function traductorTexto(texto, sourceLang, targetLang) {
+//     return new Promise((resolve, reject) => {
+//         translate({
+//             text: texto,
+//             source: sourceLang,
+//             target: targetLang
+//         }, function(result) {
+//             if (result && result.translation) {
+//                 resolve(result.translation);
+//             } else {
+//                 reject('Error al traducir el texto');
+//            }
+//         });
+//     });
+// }

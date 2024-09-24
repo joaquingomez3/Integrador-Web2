@@ -1,12 +1,32 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const path = require('path');
+const traductor = require('node-google-translate-skidz');
 require('dotenv').config();
 
 const app = express();
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+const translator = new traductor({
+    key: process.env.GOOGLE_API_KEY,
+    sourceLang: 'en',
+    targetLang: 'es', 
+  });
+
+  async function translateText(text) {
+    if (!text || typeof text !== 'string') {
+        return 'desconocido'; // o devuelve un valor por defecto
+      }
+      try {
+        const translation = await translator.translate(text);
+        return translation.text;
+      } catch (error) {
+        console.error(`Error translating text: ${error}`);
+        return text; // Return original text if translation fails
+      }
+  }
 
 app.get('/api/artworks', async (req, res) => {
     const { query, departmentId } = req.query;
@@ -33,10 +53,20 @@ app.get('/api/artworks', async (req, res) => {
         const objectIDs = data.objectIDs.slice(0, 80);  
         const artworks = await Promise.all(objectIDs.map(async (id) => {
             const artworkResponse = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`);
-            
-            return artworkResponse.json();
+            const artworkData = await artworkResponse.json();
+            const traduccionTitulo = artworkData.title && typeof artworkData.title === 'string' ? await translateText(artworkData.title) : artworkData.title;
+            const traduccionCultura = artworkData.culture && typeof artworkData.culture === 'string' ? await translateText(artworkData.culture) : artworkData.culture;
+            const traduccionDinastia = artworkData.dynasty && typeof artworkData.dynasty === 'string' ? await translateText(artworkData.dynasty) : artworkData.dynasty;
+
+            return {
+                ...artworkData,
+                titulo: traduccionTitulo,
+                cultura: traduccionCultura,
+                dinastia: traduccionDinastia,
+            };
             
         }));
+        
 
         res.json(artworks);
     } catch (error) {
