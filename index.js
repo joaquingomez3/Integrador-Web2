@@ -9,11 +9,21 @@ const port = 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-const translator = new traductor({
-    key: process.env.GOOGLE_API_KEY,
-    sourceLang: 'en',
-    targetLang: 'es', 
-  });
+  async function traductorTexto(texto, sourceLang, targetLang) {
+     return new Promise((resolve, reject) => {
+         traductor({
+             text: texto,
+             source: sourceLang,
+             target: targetLang
+         }, function(result) {
+             if (result && result.translation) {
+                 resolve(result.translation);
+             } else {
+                 reject('Error al traducir el texto');
+            }
+         });
+     });
+ }
 
   async function translateText(text) {
     if (!text || typeof text !== 'string') {
@@ -54,9 +64,9 @@ app.get('/api/artworks', async (req, res) => {
         const artworks = await Promise.all(objectIDs.map(async (id) => {
             const artworkResponse = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`);
             const artworkData = await artworkResponse.json();
-            const traduccionTitulo = artworkData.title && typeof artworkData.title === 'string' ? await translateText(artworkData.title) : artworkData.title;
-            const traduccionCultura = artworkData.culture && typeof artworkData.culture === 'string' ? await translateText(artworkData.culture) : artworkData.culture;
-            const traduccionDinastia = artworkData.dynasty && typeof artworkData.dynasty === 'string' ? await translateText(artworkData.dynasty) : artworkData.dynasty;
+            const traduccionTitulo = traduccionTexto(artworkData.title, en, es);
+            const traduccionCultura = traduccionTexto(artworkData.culture, en, es); ;
+            const traduccionDinastia = traduccionTexto(artworkData.dynasty, en, es); ;
 
             return {
                 ...artworkData,
