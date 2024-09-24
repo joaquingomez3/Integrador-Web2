@@ -34,7 +34,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/artworks', async (req, res) => {
     const { query, departmentId } = req.query;
-    let url = `https://collectionapi.metmuseum.org/public/collection/v1/search?q=${query}`;
+    const traduccionQuery = await traductorTexto(query, 'es', 'en');
+    let url = `https://collectionapi.metmuseum.org/public/collection/v1/search?q=${traduccionQuery}`;
 
     if (departmentId) {
         url += `&departmentId=${departmentId}`;
