@@ -36,7 +36,7 @@ window.onload = async function () {
     }
     
 };
-
+let inicio = 0;
 document.getElementById('searchForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
@@ -44,7 +44,7 @@ document.getElementById('searchForm').addEventListener('submit', async function 
     const departmentId = document.getElementById('departmentSelect').value;
     const countryId = document.getElementById('countrySelect').value;
     const resultsDiv = document.getElementById('results');
-    let inicio = 0;
+    
     let fin = 20;
     resultsDiv.innerHTML = ''; 
 
@@ -72,7 +72,7 @@ document.getElementById('searchForm').addEventListener('submit', async function 
         }
        
 
-        mostrarTarjetas(artworks, inicio, fin);
+        mostrarTarjetas(artworks, inicio, 20);
         let paginasTotales = Math.ceil(artworks.length / 20); 
        mostrarBotones(artworks, inicio, paginasTotales);
 
@@ -89,24 +89,29 @@ document.getElementById('searchForm').addEventListener('submit', async function 
     const btnSiguiente = document.createElement('button');
     btnSiguiente.textContent = 'Siguiente';
 
+    btnAnterior.disabled = inicio === 0;
+    btnSiguiente.disabled = inicio >= (paginasTotales - 1) * 20;
+
+    // Evento para el botón anterior
     btnAnterior.addEventListener('click', () => {
         if (inicio > 0) {
-            
+            inicio -= 20;
             mostrarTarjetas(artworks, inicio, inicio + 20);
-            inicio--;
+            mostrarBotones(artworks, inicio, paginasTotales); // Actualizar los botones
         }
-
     });
-    botones.appendChild(btnAnterior);
 
+    // Evento para el botón siguiente
     btnSiguiente.addEventListener('click', () => {
-        if (inicio <= paginasTotales ) {
-            
-            mostrarTarjetas(artworks, inicio*20, (inicio*20) + 20);
-            inicio++;
+        if (inicio < (paginasTotales - 1) * 20) {
+            inicio += 20;
+            mostrarTarjetas(artworks, inicio, inicio + 20);
+            mostrarBotones(artworks, inicio, paginasTotales); // Actualizar los botones
         }
-
     });
+
+    // Añadir los botones al DOM
+    botones.appendChild(btnAnterior);
     botones.appendChild(btnSiguiente);
  }
  function mostrarTarjetas(artworks, inicio, fin) {
