@@ -40,7 +40,7 @@ let inicio = 0;
 document.getElementById('searchForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    const query = document.getElementById('query').value;
+    const query = document.getElementById('query').value.trim();
     const departmentId = document.getElementById('departmentSelect').value;
     const countryId = document.getElementById('countrySelect').value;
     const resultsDiv = document.getElementById('results');
@@ -48,13 +48,25 @@ document.getElementById('searchForm').addEventListener('submit', async function 
     let fin = 20;
     resultsDiv.innerHTML = ''; 
 
-    let url = `/api/artworks?query=${query}`;
+    let url = '/api/artworks';
+    if (query) {
+        url += `?query=${query}`;
+    }
     if (departmentId) {
-        url += `&departmentId=${departmentId}`;
+        if (url.includes('?')) {
+            url += `&departmentId=${departmentId}`;
+        } else {
+            url += `?departmentId=${departmentId}`;
+        }
     }
     if(countryId){
-        url += `&geoLocation=${countryId}`;
+        if (url.includes('?')) {
+            url += `&geoLocation=${countryId}`;
+        } else {
+            url += `?geoLocation=${countryId}`;
+        }
     }
+
 
     try {
         const response = await fetch(url);
