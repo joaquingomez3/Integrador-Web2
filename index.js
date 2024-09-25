@@ -76,7 +76,7 @@ app.get('/api/artworks', async (req, res) => {
             
         }));
         
-        console.log(artworks);
+        
         res.json(artworks);
     } catch (error) {
         console.error('Error al buscar obras:', error);
