@@ -37,8 +37,8 @@ app.get('/api/artworks', async (req, res) => {
     const traduccionQuery = await traductorTexto(query, 'es', 'en');
     let url = 'https://collectionapi.metmuseum.org/public/collection/v1/search';
 
-    if (traduccionQuery) {
-        url += `?q=${traduccionQuery}`;
+    if (query) {
+        url += `?q=${query}`;
     } else if (departmentId) {
         url += `?q=*&departmentId=${departmentId}`;
     } else {
