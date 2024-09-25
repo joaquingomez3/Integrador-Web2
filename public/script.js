@@ -48,6 +48,10 @@ document.getElementById('searchForm').addEventListener('submit', async function 
     let fin = 20;
     resultsDiv.innerHTML = ''; 
 
+    const button = document.querySelector('#searchForm button[type="submit"]');
+    button.disabled = true;
+    document.getElementById('resultsTitle').textContent = 'Cargando...';
+
     let url = '/api/artworks';
     if (query) {
         url += `?query=${query}`;
@@ -91,6 +95,9 @@ document.getElementById('searchForm').addEventListener('submit', async function 
     } catch (error) {
         console.error('Error al obtener las obras:', error);
         resultsDiv.innerHTML = '<p>Error al obtener los datos.</p>';
+    } finally {
+        button.disabled = false;
+        document.getElementById('resultsTitle').textContent = 'Resultados:';
     }
 });
  function mostrarBotones(artworks,inicio, paginasTotales) {
@@ -150,5 +157,4 @@ document.getElementById('searchForm').addEventListener('submit', async function 
           resultsDiv.appendChild(artworkElement);
       });
  }
-
 
