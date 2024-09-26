@@ -40,8 +40,8 @@ app.get('/api/artworks', async (req, res) => {
     const params = [];
 
     // Si hay palabra clave, la añadimos
-    if (traduccionQuery) {
-        params.push(`q=${traduccionQuery}`);
+    if (query) {
+        params.push(`q=${query}`);
     } else {
         params.push('q=*'); // Si no hay palabra clave, devolvemos todo
     }
