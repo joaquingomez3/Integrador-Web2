@@ -18,22 +18,7 @@ window.onload = async function () {
     } catch (error) {
         console.error('Error al obtener los departamentos:', error);
     }
-    try {
-        const response = await fetch('/api/countries');
-        if (!response.ok) {
-            throw new Error(`Error al obtener los países: ${response.status}`);
-        }
-
-        const countries = await response.json();
-        countries.forEach(country => {
-            const option = document.createElement('option');
-            option.value = country.code;
-            option.textContent = country.name;
-            countrySelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error('Error al obtener los países:', error);
-    }
+   
     
 };
 let inicio = 0;

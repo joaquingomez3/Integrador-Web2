@@ -33,18 +33,32 @@ app.use(express.static(path.join(__dirname, 'public')));
  
 
 app.get('/api/artworks', async (req, res) => {
-    const { query, departmentId } = req.query;
-    const traduccionQuery = await traductorTexto(query, 'es', 'en');
+    const { query, departmentId, geoLocation } = req.query;
+    let traduccionQuery = await traductorTexto(query, 'es', 'en');
     let url = 'https://collectionapi.metmuseum.org/public/collection/v1/search';
 
+    const params = [];
+
+    // Si hay palabra clave, la añadimos
     if (query) {
-        url += `?q=${query}`;
-    } else if (departmentId) {
-        url += `?q=*&departmentId=${departmentId}`;
+        params.push(`q=${query}`);
     } else {
-        url += `?q=*`;
+        params.push('q=*'); // Si no hay palabra clave, devolvemos todo
     }
 
+    // Si hay departamento, lo añadimos
+    if (departmentId) {
+        params.push(`departmentId=${departmentId}`);
+    }
+
+    // Si hay geoLocation, lo añadimos
+    if (geoLocation) {
+        params.push(`geoLocation=${geoLocation}`);
+    }
+
+    // Concatenamos los parámetros en la URL
+    url += `?${params.join('&')}`; 
+    console.log(url);
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -115,28 +129,8 @@ app.get('/api/artworks/:id', async (req, res) => {
         res.status(500).json({ error: 'Error al obtener los departamentos.' });
     }
 });
-app.get('/api/countries', async (req, res) => {
-    const url = 'https://restcountries.com/v3.1/all';
 
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const countries = data.map(country => ({
-            name: country.name.common,
-            code: country.cca2
-        }));
-        res.json(countries);
-    } catch (error) {
-        console.error('Error al obtener los países:', error);
-        res.status(500).json({ error: 'Error al obtener los países.' });
-    }
-});
 app.listen(port, () => {
     console.log(`Servidor en http://localhost:${port}`);
 });
 
-//ee
