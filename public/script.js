@@ -1,6 +1,6 @@
 window.onload = async function () {
     const departmentSelect = document.getElementById('departmentSelect');
-    const countrySelect = document.getElementById('countrySelect');
+    
     try {
         const response = await fetch('/api/departments');
          
