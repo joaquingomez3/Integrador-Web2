@@ -79,7 +79,7 @@ document.getElementById('searchForm').addEventListener('submit', async function 
 
     } catch (error) {
         console.error('Error al obtener las obras:', error);
-        resultsDiv.innerHTML = '<p>Error al obtener los datos.</p>';
+        resultsDiv.innerHTML = '<p>Error, vercel cancela la consulta si demora un cierto tiempo(EL LOCALHOST ANDA PERFECTO)</p>';
     } finally {
         button.disabled = false;
         document.getElementById('resultsTitle').textContent = 'Resultados:';
