@@ -146,7 +146,7 @@ document.getElementById('searchForm').addEventListener('submit', async function 
           const artworkElement = document.createElement('div');
           artworkElement.classList.add('artwork');
           artworkElement.innerHTML = `
-              <img src="${artwork.primaryImageSmall ? artwork.primaryImageSmall : 'https://via.placeholder.com/1024x1024?text=No+Image+Available'}" alt="Imagen NO Disponible" title="${artwork.objectDate}">
+              <img src="${artwork.primaryImageSmall ? artwork.primaryImageSmall : 'https://via.placeholder.com/1024x1024?text=No+Image+Available'}" alt="Imagen NO Disponible" title="Fecha de creación: ${artwork.objectDate}">
               <h3>${artwork.titulo || 'Sin título'}</h3>
              <p>Cultura: ${artwork.cultura || 'Desconocido'}</p>
               <p>Dinastia: ${artwork.dinastia || 'Desconocido'}</p>
