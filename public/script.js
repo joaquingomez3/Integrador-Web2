@@ -98,19 +98,29 @@ document.getElementById('searchForm').addEventListener('submit', async function 
 
     // Evento para el botón anterior
     btnAnterior.addEventListener('click', () => {
+        event.preventDefault();
         if (inicio > 0) {
             inicio -= 20;
             mostrarTarjetas(artworks, inicio, inicio + 20);
             mostrarBotones(artworks, inicio, paginasTotales); // Actualizar los botones
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Desplazamiento suave
+            });
         }
     });
 
     // Evento para el botón siguiente
     btnSiguiente.addEventListener('click', () => {
+        event.preventDefault();
         if (inicio < (paginasTotales - 1) * 20) {
             inicio += 20;
             mostrarTarjetas(artworks, inicio, inicio + 20);
             mostrarBotones(artworks, inicio, paginasTotales); // Actualizar los botones
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Desplazamiento suave
+            });
         }
     });
 
